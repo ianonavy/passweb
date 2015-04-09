@@ -3,7 +3,9 @@
 
 from flask import Flask, request, url_for, render_template, redirect
 from flask.ext.login import login_required, LoginManager, login_user, \
-    logout_user
+    logout_user, session, abort
+import base64
+import os
 import subprocess
 
 app = Flask(__name__)
@@ -12,6 +14,22 @@ with open('secret.txt') as secret:
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+
+@app.before_request
+def csrf_protect():
+    if request.method == "POST":
+        token = session.pop('_csrf_token', None)
+        if not token or token != request.form.get('_csrf_token'):
+            abort(403)
+
+def generate_csrf_token():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = base64.b64encode(os.urandom(16)).decode('utf-8')
+    return session['_csrf_token']
+
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
+
 
 
 class User(object):
