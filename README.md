@@ -9,7 +9,13 @@ a device you own like a smartphone! Don't enter your PGP passphrase on someone
 else's computer!) No, I will not implement some hacky thing that lets you enter
 your PGP passphrase on some public computer. You should never do that.
 
-## Usage (after cloning)
+## Install
+
+    git clone
+    cd passweb
+    pip install -r requirements.txt
+
+## Usage
 
 Generate a private key and self-signed cert:
 
