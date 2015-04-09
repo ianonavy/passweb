@@ -9,6 +9,13 @@ a device you own like a smartphone! Don't enter your PGP passphrase on someone
 else's computer!) No, I will not implement some hacky thing that lets you enter
 your PGP passphrase on some public computer. You should never do that.
 
+## Prerequisites
+
+* Python 3
+* pip
+* openssl
+* pass
+
 ## Features
 
 * HTTPS
@@ -22,30 +29,37 @@ your PGP passphrase on some public computer. You should never do that.
   - the threat model also assumes that they're not using screen capture software
     because otherwise how would you even see the password
 
-
 ## Install
 
     git clone
     cd passweb
     pip install -r requirements.txt
 
-## Usage
+## Setup
 
 Generate a private key and self-signed cert:
 
-	cd passweb
+    cd passweb
     openssl genrsa -out passweb.key 4096
     openssl req -new -x509 -key passweb.key -out passweb.cert -days 1095
 
 Create a secret key for sessions:
 
-	cd passweb
+    cd passweb
     pwgen 128 1 > secret.txt
 
 Store the password for passweb in pass (duh)
 
     pass insert passweb
-	(enter password here)
+    (enter password here)
+
+## Running
+
+You probably want to run this in a tmux in screen session. An AUR package with a
+systemd hook will come later!
+
+    cd passweb
+    python server.py
 
 ## Issues
 
