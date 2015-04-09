@@ -2,6 +2,12 @@
 
 {% block main %}
 <a href="{{ url_for('logout') }}">Logout</a>
+<form action="{{ url_for('save_password') }}" method="POST">
+	<p>New password (commit it to memory before you confirm the change):</p>
+	<p><strong>{{ new_pass }}</strong></p>
+	<input type="submit" value="Confirm Change">
+    <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+</form>
 <br />
 <br />
 <div>

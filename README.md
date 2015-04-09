@@ -9,6 +9,20 @@ a device you own like a smartphone! Don't enter your PGP passphrase on someone
 else's computer!) No, I will not implement some hacky thing that lets you enter
 your PGP passphrase on some public computer. You should never do that.
 
+## Features
+
+* HTTPS
+* CSRF protection on login
+* Very simple UI
+* Run it yourself
+* Gives you the option to change the login password without having to type a
+  new one
+  - the threat model here is you're logging in on a public computer, and you
+    can't assume the computer does not have a keylogger
+  - the threat model also assumes that they're not using screen capture software
+    because otherwise how would you even see the password
+
+
 ## Install
 
     git clone
@@ -35,4 +49,4 @@ Store the password for passweb in pass (duh)
 
 ## Issues
 
-Doesn't work with passwords stored in folders. You'll have to manually
+Doesn't clear passwords from memory

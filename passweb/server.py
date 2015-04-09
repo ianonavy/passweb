@@ -6,6 +6,7 @@ from flask.ext.login import login_required, LoginManager, login_user, \
     logout_user, session, abort
 import base64
 import os
+import random
 import subprocess
 
 app = Flask(__name__)
@@ -46,6 +47,14 @@ class User(object):
 
     def get_id(self):
         return 'admin'
+
+
+def four_random_words():
+    with open('/usr/share/dict/cracklib-small') as word_file:
+        words = word_file.readlines()
+        long_words = [word.strip() for word in words if 5 < len(word) < 9]
+        random.shuffle(long_words)
+        return(long_words[:4])
 
 
 @login_manager.user_loader
@@ -95,7 +104,9 @@ def index():
                     "<a href='{}'>{}</a>".format(url, part_to_urlify))
             if "└" in name and prefix:  # last thing in directory
                 prefix.pop()  # go up one level
-    return render_template('index.html', names=names)
+    new_pass = ' '.join(four_random_words())
+    session['new_pass'] = new_pass
+    return render_template('index.html', names=names, new_pass=new_pass)
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -110,6 +121,16 @@ def login():
 @app.route('/logout/')
 def logout():
     logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/save-password/', methods=["POST"])
+@login_required
+def save_password():
+    passwd = session['new_pass'] + "\n" + session['new_pass'] + "\n"
+    subprocess.check_output(
+        "pass insert -f passweb", input=passwd.encode('utf-8'), shell=True)
+    del session['new_pass']
     return redirect(url_for('index'))
 
 
