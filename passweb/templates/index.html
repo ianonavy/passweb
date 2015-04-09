@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+<a href="{{ url_for('logout') }}">Logout</a>
+<br />
+<br />
+<div>
+{% for name in names %}
+{{ name|safe }}<br />
+{% endfor %}
+</div>
+{% endblock main %}

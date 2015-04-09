@@ -1,0 +1,4 @@
+passweb.crt
+passweb.key
+secret.txt
+*.pyc
